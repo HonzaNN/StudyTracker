@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="clr-namespace:StudyTracker.App.Views"
+                       xmlns:vm="clr-namespace:StudyTracker.App.ViewModels"
+                       xmlns:models="clr-namespace:StudyTracker.BL.Models;assembly=StudyTracker.BL"
+                       x:Class="StudyTracker.App.Views.MainPageView"
+                       Title="Main page"
+                       x:DataType="vm:MainPageViewModel"
+                       x:Name="MainPageViewRoot"
+                       BackgroundColor="#1c1c1c">
+
+    <VerticalStackLayout>
+
+        <HorizontalStackLayout HorizontalOptions="End">
+            <VerticalStackLayout>
+                <Label Text="{Binding User.Name}" VerticalOptions="Center"
+                       TextColor="white"
+                       FontSize="20"
+                       Margin="0,0,5,0"
+                       HorizontalOptions="End" />
+
+                <Label Text="{Binding User.Surname}" VerticalOptions="Center"
+                       TextColor="white"
+                       FontSize="20"
+                       Margin="0,5,5,0"
+                       HorizontalOptions="End" />
+            </VerticalStackLayout>
+            <Image Source="{Binding User.ImageUri}" HeightRequest="70" Aspect="AspectFill" />
+        </HorizontalStackLayout>
+
+
+        <Label Text="Upcoming Activities"
+               TextColor="white"
+               Margin="15,0"
+               FontSize="20" />
+
+        <HorizontalStackLayout IsVisible="{Binding MissingActivities}">
+            <Label Text="You don't have any upcomming activities" TextColor="gray" Margin="15,0,10,0" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout IsVisible="{Binding Activity1Visible}">
+            <Label Text="{Binding Activity1.Name}" TextColor="LightGrey" Margin="15,0,10,0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding Source={x:Reference MainPageViewRoot}, Path=BindingContext.GoToActivityCommand}"
+                        CommandParameter="{Binding Activity1}" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="Starts:" TextColor="gray" Margin="0,0,5,0" />
+            <Label Text="{Binding Activity1.StartDate}" TextColor="gray" Margin="0,0,10,0" />
+            <Label Text="Ends:" TextColor="gray" Margin="0,0,5,0" />
+            <Label Text="{Binding Activity1.EndDate}" TextColor="gray" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout IsVisible="{Binding Activity2Visible}">
+            <Label Text="{Binding Activity2.Name}" TextColor="LightGrey" Margin="16,0,10,0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding Source={x:Reference MainPageViewRoot}, Path=BindingContext.GoToActivityCommand}"
+                        CommandParameter="{Binding Activity2}" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="Starts:" TextColor="gray" Margin="0,0,5,0" />
+            <Label Text="{Binding Activity2.StartDate}" TextColor="gray" Margin="0,0,10,0" />
+            <Label Text="Ends:" TextColor="gray" Margin="0,0,5,0" />
+            <Label Text="{Binding Activity2.EndDate}" TextColor="gray" />
+        </HorizontalStackLayout>
+
+        <Label Text="Your Subjects"
+               TextColor="white"
+               Margin="15,0"
+               FontSize="20" />
+
+        <CollectionView ItemsSource="{Binding User.Subjects}"
+                        Margin="10"
+                        VerticalScrollBarVisibility="Always">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="4"
+                                 HorizontalItemSpacing="10"
+                                 VerticalItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:SubjectListModel">
+                    <Frame BackgroundColor="DarkRed"
+                           BorderColor="Red"
+                           CornerRadius="5"
+                           Padding="0"
+                           HasShadow="False"
+                           HeightRequest="50">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={x:Reference MainPageViewRoot}, Path=BindingContext.GoToSubjectCommand}"
+                                CommandParameter="{Binding Id}" />
+                        </Frame.GestureRecognizers>
+                        <StackLayout>
+
+                            <Label Text="{Binding Shortcut}"
+                                   TextColor="White"
+                                   FontSize="20"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+        <Grid ColumnDefinitions="*,*,*" RowDefinitions="50,50" RowSpacing="5">
+            <Grid.Margin>
+                <Thickness Left="20" Top="10" Right="20" Bottom="10" />
+            </Grid.Margin>
+            <Button Text="Log Out" Command="{Binding LogOutCommand}" Grid.Column="2" Grid.Row="1" />
+            <Button Text="Edit user" Command="{Binding EditUserCommand}" Grid.Column="2" />
+            <Button Text="All subjects" Command="{Binding GoToSubjectListCommand}"
+                    CommandParameter="{Binding CurrentUserId}"
+                    Grid.Column="0" />
+            <Button Text="New Subject" Command="{Binding GoToCreateCommand}" CommandParameter="{Binding CurrentUserId}"
+                    Grid.Column="0" Grid.Row="2" />
+        </Grid>
+
+
+    </VerticalStackLayout>
+</views:ContentPageBase>

@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="clr-namespace:StudyTracker.App.Views"
+                       xmlns:vm="clr-namespace:StudyTracker.App.ViewModels"
+                       xmlns:models="clr-namespace:StudyTracker.BL.Models;assembly=StudyTracker.BL"
+                       xmlns:common="clr-namespace:StudyTracker.DAL.Common;assembly=StudyTracker.DAL"
+                       x:Class="StudyTracker.App.Views.SubjectPageView"
+                       Title="Subject"
+                       x:DataType="vm:SubjectPageViewModel"
+                       x:Name="SubjectPageViewRoot"
+                       BackgroundColor="#1c1c1c">
+
+    <Grid RowDefinitions="80,40,*,auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Text="{Binding Subject.Name}" TextColor="White" FontSize="35" Padding="40, 0, 0, 0" />
+
+
+        <Label Grid.Row="1" Grid.Column="0" Padding="40, 0, 0, 0" TextColor="White">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Teacher : " FontSize="18" />
+                    <Span Text="{Binding Teacher.Name}" FontSize="18" />
+                    <Span Text=" " />
+                    <Span Text="{Binding Teacher.Surname}" FontSize="18" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+        <Label Grid.Column="0" Grid.Row="2" Text="There are no activities" TextColor="Grey" Margin="40,5,5,20"
+               IsVisible="{Binding MissingActivities}" />
+
+
+        <StackLayout Orientation="Horizontal" Grid.Column="1" Margin="10" HorizontalOptions="End">
+            <Label Text="Type:" TextColor="White" VerticalOptions="Center" Margin="5,5,5,20" />
+            <Picker x:Name="TypePicker" SelectedIndexChanged="OnTypePickerSelectedIndexChanged"
+                    TextColor="Red"
+                    BackgroundColor="White">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type common:ActivityTypeEntity}">
+                        <common:ActivityTypeEntity>None</common:ActivityTypeEntity>
+                        <common:ActivityTypeEntity>StudySession</common:ActivityTypeEntity>
+                        <common:ActivityTypeEntity>MidtermExam</common:ActivityTypeEntity>
+                        <common:ActivityTypeEntity>FinalExam</common:ActivityTypeEntity>
+                        <common:ActivityTypeEntity>Lecture</common:ActivityTypeEntity>
+                        <common:ActivityTypeEntity>PracticalClass</common:ActivityTypeEntity>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Label Text="State:" TextColor="White" VerticalOptions="Center" Margin="5,5,5,20" />
+            <Picker x:Name="StatePicker" SelectedIndexChanged="OnStatePickerSelectedIndexChanged"
+                    TextColor="Red"
+                    BackgroundColor="White">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type common:ActivityStateEntity}">
+                        <common:ActivityStateEntity>None</common:ActivityStateEntity>
+                        <common:ActivityStateEntity>Done</common:ActivityStateEntity>
+                        <common:ActivityStateEntity>Upcoming</common:ActivityStateEntity>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Label Text="Date:" TextColor="White" VerticalOptions="Center" Margin="5,5,5,20" />
+            <Picker x:Name="DatePicker" SelectedIndexChanged="OnDatePickerSelectedIndexChanged"
+                    TextColor="Red"
+                    BackgroundColor="White">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Most Recent</x:String>
+                        <x:String>Least Recent</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </StackLayout>
+
+
+        <!-- Activities CollectionView -->
+        <CollectionView ItemsSource="{Binding Activities}"
+                        Margin="10"
+                        Grid.Row="2"
+                        Grid.ColumnSpan="2"
+                        VerticalScrollBarVisibility="Always"
+                        HorizontalOptions="StartAndExpand">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="1"
+                                 HorizontalItemSpacing="10"
+                                 VerticalItemSpacing="5" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ActivityListModel">
+                    <Frame BackgroundColor="DarkRed"
+                           BorderColor="Red"
+                           CornerRadius="5"
+                           Padding="0"
+                           HeightRequest="55"
+                           WidthRequest="900"
+                           HasShadow="False">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={x:Reference SubjectPageViewRoot}, Path=BindingContext.GoToActivityCommand}"
+                                CommandParameter="{Binding Id}" />
+                        </Frame.GestureRecognizers>
+                        <Grid RowDefinitions="*,*">
+                            <Label Text="{Binding Name}"
+                                   Grid.Row="0"
+                                   TextColor="White"
+                                   FontSize="20"
+                                   HorizontalOptions="Start"
+                                   Padding="5, 0, 0, 0" />
+                            <HorizontalStackLayout Grid.Row="1">
+                                <Label
+                                    TextColor="#FBD6D8"
+                                    FontSize="15"
+                                    HorizontalOptions="Start"
+                                    Padding="5, 0, 0, 0">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Type}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding StartDate}" />
+                                            <Span Text=" - " />
+                                            <Span Text="{Binding EndDate}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+        <Grid ColumnDefinitions="*, *"
+              RowDefinitions="*,*"
+              Grid.Row="3"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              HeightRequest="120">
+            <Grid.Margin>
+                <Thickness Left="20"
+                           Top="10"
+                           Right="20"
+                           Bottom="30" />
+            </Grid.Margin>
+
+            <Button Grid.Row="0"
+                    Grid.Column="0"
+                    IsVisible="{Binding IsNotJoined}"
+                    Text="Join"
+                    Command="{Binding JoinSubjectCommand}"
+                    Margin="0,10,10,0" />
+            <Button
+                Grid.Column="0"
+                IsVisible="{Binding IsJoined}"
+                Text="Leave"
+                Command="{Binding LeaveSubjectCommand}"
+                Margin="0,10,10,0" />
+
+            <Button Grid.Column="1" Text="Create activity " Command="{Binding GoToCreateActivityCommand}"
+                    Margin="0,10,10,0" />
+
+            <Button Grid.Column="0"
+                    Grid.Row="1"
+                    Text="Back"
+                    Command="{Binding GoBackCommand}"
+                    Margin="0,10,10,0" />
+
+            <Button Grid.Column="2"
+                    Grid.Row="1"
+                    Text="Edit Subject"
+                    Command="{Binding GoToEditSubjectCommand}"
+                    Margin="0,10,10,0" />
+        </Grid>
+    </Grid>
+</views:ContentPageBase>

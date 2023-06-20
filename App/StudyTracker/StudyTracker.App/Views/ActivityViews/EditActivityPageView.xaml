@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="clr-namespace:StudyTracker.App.Views"
+                       xmlns:vm="clr-namespace:StudyTracker.App.ViewModels"
+                       x:Class="StudyTracker.App.Views.EditActivityPageView"
+                       Title="Edit Activity"
+                       x:DataType="vm:EditActivityPageViewModel"
+                       BackgroundColor="#1c1c1c">
+
+    <VerticalStackLayout>
+        <Grid
+            RowDefinitions="50">
+            <Grid.Margin>
+                <Thickness Left="20" Top="10" Right="20" Bottom="10" />
+            </Grid.Margin>
+
+            <Entry Text="{Binding Activity.Name}" TextColor="White" Placeholder="Name" PlaceholderColor="Grey"
+                   Grid.Row="0" />
+
+        </Grid>
+
+        <HorizontalStackLayout Margin="20,0">
+            <Label Text="Start date:" TextColor="white" />
+            <Label Text="{Binding Activity.StartDate}" TextColor="White" Margin="5,0,10,10" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Margin="20,0">
+            <Label Text="End date:" TextColor="white" />
+            <Label Text="{Binding Activity.EndDate}" TextColor="white" Margin="5,0,10,10" />
+        </HorizontalStackLayout>
+
+
+        <HorizontalStackLayout Margin="0,0,0,20">
+            <Picker Margin="20,0"
+                    Title="Select type" TitleColor="gray" ItemsSource="{Binding TypeCollection}"
+                    SelectedItem="{Binding Activity.Type}"
+                    BackgroundColor="White" />
+
+            <Picker Margin="20,0"
+                    Title="Select state" TitleColor="gray" ItemsSource="{Binding StateCollection}"
+                    SelectedItem="{Binding Activity.State}"
+                    BackgroundColor="White" />
+
+        </HorizontalStackLayout>
+        <Grid ColumnDefinitions="*,*,*">
+            <Button Text="Save"
+                    Grid.Column="0"
+                    Command="{Binding SaveCommand}" Margin="20,0,10,0" />
+
+            <Button Text="Back"
+                    Grid.Column="1"
+                    Command="{Binding BackCommand}" />
+
+            <Button Text="Delete"
+                    Grid.Column="2"
+                    Command="{Binding DeleteCommand}" Margin="10,0,20,0" />
+        </Grid>
+    </VerticalStackLayout>
+</views:ContentPageBase>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="clr-namespace:StudyTracker.App.Views"
+                       xmlns:vm="clr-namespace:StudyTracker.App.ViewModels"
+                       x:Class="StudyTracker.App.Views.ActivityPageView"
+                       Title="Activity"
+                       x:DataType="vm:ActivityPageViewModel"
+                       x:Name="ActivityPageViewRoot"
+                       BackgroundColor="#1c1c1c">
+
+    <VerticalStackLayout>
+
+
+        <Label Text="{Binding Activity.Name}" TextColor="white" Padding="40, 20, 0, 0" FontSize="24" />
+
+        <Label Text="{Binding Activity.Type}" TextColor="LightGrey" Padding="40, 0, 0, 0" />
+        <Label Text="{Binding Activity.State}" TextColor="LightGrey" Padding="40, 0, 0, 0" />
+        <Label Text="Start:" TextColor="white" Padding="40, 20, 0, 0" />
+        <Label Text="{Binding Activity.StartDate}" TextColor="white" Padding="40, 0, 0, 0" />
+        <Label Text="End:" TextColor="white" Padding="40, 0, 0, 0" />
+        <Label Text="{Binding Activity.EndDate}" TextColor="white" Padding="40, 0, 0, 0" />
+
+        <Grid ColumnDefinitions="*,*">
+            <Grid.Margin>
+                <Thickness Left="20" Top="10" Right="20" Bottom="10" />
+            </Grid.Margin>
+            <Button Grid.Column="1" Text="Edit" Command="{Binding GoToEditActivityCommand}" Margin="0,10,5,0" />
+            <Button Grid.Column="0" Text="Back" Command="{Binding GoBackCommand}" Margin="0,10,5,0" />
+        </Grid>
+
+        <Button IsEnabled="False" IsVisible="{Binding JoinDisable}" Text="" Margin="20,0" />
+        <Button IsVisible="{Binding IsNotJoined}" Text="Join" Command="{Binding JoinCommand}" Margin="20,0" />
+        <Button IsVisible="{Binding IsJoined}" Text="Leave" Command="{Binding LeaveCommand}" Margin="20,0" />
+
+    </VerticalStackLayout>
+</views:ContentPageBase>

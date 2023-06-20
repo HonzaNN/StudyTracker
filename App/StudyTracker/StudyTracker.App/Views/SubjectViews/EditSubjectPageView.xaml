@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="clr-namespace:StudyTracker.App.Views"
+                       xmlns:vm="clr-namespace:StudyTracker.App.ViewModels"
+
+
+                       x:Class="StudyTracker.App.Views.EditSubjectPageView"
+                       Title="Subject"
+                       x:DataType="vm:EditSubjectPageViewModel"
+                       BackgroundColor="#1c1c1c">
+
+    <VerticalStackLayout>
+
+        <Grid
+            RowDefinitions="40,40,auto">
+            <Grid.Margin>
+                <Thickness Left="20" Top="10" Right="20" Bottom="10" />
+            </Grid.Margin>
+
+            <Entry Text="{Binding Subject.Name}" TextColor="White" Placeholder="Name" PlaceholderColor="Grey"
+                   Grid.Row="0" />
+
+            <Entry Text="{Binding Subject.Shortcut}" TextColor="White" Placeholder="Shortcut" PlaceholderColor="Grey"
+                   Grid.Row="1" />
+
+            <Picker Grid.Row="2" Margin="10,10,20,10"
+                    Title="Select a teacher" TitleColor="gray" ItemsSource="{Binding AllUsers}"
+                    SelectedItem="{Binding SelectedUser}"
+                    ItemDisplayBinding="{Binding Name}"
+                    BackgroundColor="White"
+                    TextColor="Red" />
+
+        </Grid>
+        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="15">
+            <Grid.Margin>
+                <Thickness Left="20" Top="10" Right="20" Bottom="10" />
+            </Grid.Margin>
+
+            <Button Text="Save"
+                    Grid.Column="0"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding SelectedUser.Id}" />
+
+            <Button Text="Back"
+                    Grid.Column="1"
+                    Command="{Binding BackCommand}" />
+
+            <Button Text="Delete"
+                    Grid.Column="2"
+                    Command="{Binding DeleteCommand}" />
+        </Grid>
+
+
+    </VerticalStackLayout>
+</views:ContentPageBase>

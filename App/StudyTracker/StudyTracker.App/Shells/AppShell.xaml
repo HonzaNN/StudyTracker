@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:i="clr-namespace:StudyTracker.App.Views"
+       x:Class="StudyTracker.App.Shells.AppShell"
+       x:Name="AppShellRoot"
+       FlyoutBehavior="Disabled">
+
+    <Shell.MenuBarItems>
+        <MenuBarItem Text="Menu">
+            <MenuFlyoutItem Text="users"
+                            Command="{Binding Source={x:Reference AppShellRoot}, Path= NavigateToLoginPageCommand}" />
+        </MenuBarItem>
+    </Shell.MenuBarItems>
+    <ShellContent ContentTemplate="{DataTemplate i:LoginPageView}" Route="home" />
+
+</Shell>
